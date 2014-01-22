@@ -5,21 +5,21 @@
 template <class ItemType>
 ArrayBag<ItemType>::ArrayBag()
 {
-	itemCount=0;
+	itemCount = 0;
 }
 
 // Return the number of Items being stored in the Bag
 template <class ItemType>
 int ArrayBag<ItemType>::getCurrentSize() const
 {
-	return 0; 	// STUB
+	return itemCount; 
 }
 
 // Return the capacity of the bag (the maximum Items it can store) 
 template <class ItemType>
 int ArrayBag<ItemType>::getCapacity( ) const
 {
-	return 0;	// STUB
+	return DEFAULT_CAPACITY;
 }
 
 // Report whether the Bag is empty
@@ -28,7 +28,10 @@ int ArrayBag<ItemType>::getCapacity( ) const
 template <class ItemType>
 bool ArrayBag<ItemType>::isEmpty() const
 {
-	return false;	// STUB
+	if(itemCount == 0)
+		return true;
+	else
+		return false;
 }
 
 // Report whether the Bag is full
@@ -37,7 +40,10 @@ bool ArrayBag<ItemType>::isEmpty() const
 template <class ItemType>
 bool ArrayBag<ItemType>::isFull() const
 {
-	return false;	// STUB
+	if(itemCount == DEFAULT_CAPACITY)
+		return true;
+	else
+		return false;
 }
 
 // Give the Bag a new Item to store
@@ -47,14 +53,24 @@ bool ArrayBag<ItemType>::isFull() const
 template <class ItemType>
 bool ArrayBag<ItemType>::add(const ItemType& newItem)
 {
-	return false;	// STUB
+	if(!isFull())
+	{
+		items[itemCount] = newItem;
+		++itemCount;
+		if(isFull())
+			return true;
+		else
+			return false;
+	}
+	else
+		return true;
 }
 
 // Make the Bag act like an empty Bag again
 template <class ItemType>
 void ArrayBag<ItemType>::clear()
 {
-	// empty STUB
+	itemCount = 0;
 }
 
 // Remove an Item from the bag
@@ -63,7 +79,20 @@ void ArrayBag<ItemType>::clear()
 template <class ItemType>
 bool ArrayBag<ItemType>::remove(const ItemType& anItem)
 {
-	return false; 	// STUB
+	int i = 0;
+	while(i < itemCount && items[i]!= anItem)
+		i++;
+	if(i >= itemCount)
+		return false;
+	else
+	{
+		for(; i < itemCount-1; ++i)
+		{
+			items[i] = items[i+1];
+		}
+		itemCount--;
+		return true;	//confirm w/ E. White
+	}
 }
 
 // Check if an Item is in the Bag
@@ -71,7 +100,12 @@ bool ArrayBag<ItemType>::remove(const ItemType& anItem)
 template <class ItemType>
 bool ArrayBag<ItemType>::contains(const ItemType& anItem) const
 {
-	return false;	// STUB
+	for(int i = 0; i < itemCount; i++)
+	{
+		if(items[i] == anItem)
+			return true;
+	}
+	return false;
 }
 
 // Check how many times an Item is in the Bag
@@ -80,7 +114,11 @@ bool ArrayBag<ItemType>::contains(const ItemType& anItem) const
 template <class ItemType>
 int ArrayBag<ItemType>::getFrequencyOf(const ItemType& anItem) const
 {
-	return 0;		// STUB
+	int n = 0;
+	for(int i = 0; i < itemCount; i++)
+		if(items[i] == anItem)
+			n++;
+	return n;		// STUB
 }
 
 // Make an output vector of Items from the bag (for checking)
