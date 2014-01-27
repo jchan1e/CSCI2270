@@ -1,5 +1,6 @@
 //
 #include <cstddef>
+#include <vector>
 
 // Constructor; creates and initializes an empty Bag
 template <class ItemType>
@@ -81,15 +82,13 @@ bool ArrayBag<ItemType>::remove(const ItemType& anItem)
 {
 	int i = 0;
 	while(i < itemCount && items[i]!= anItem)
-		i++;
+		++i;
 	if(i >= itemCount)
 		return false;
 	else
 	{
 		for(; i < itemCount-1; ++i)
-		{
 			items[i] = items[i+1];
-		}
 		itemCount--;
 		return true;	//confirm w/ E. White
 	}
@@ -100,7 +99,7 @@ bool ArrayBag<ItemType>::remove(const ItemType& anItem)
 template <class ItemType>
 bool ArrayBag<ItemType>::contains(const ItemType& anItem) const
 {
-	for(int i = 0; i < itemCount; i++)
+	for(int i = 0; i < itemCount; ++i)
 	{
 		if(items[i] == anItem)
 			return true;
@@ -115,10 +114,10 @@ template <class ItemType>
 int ArrayBag<ItemType>::getFrequencyOf(const ItemType& anItem) const
 {
 	int n = 0;
-	for(int i = 0; i < itemCount; i++)
+	for(int i = 0; i < itemCount; ++i)
 		if(items[i] == anItem)
 			n++;
-	return n;		// STUB
+	return n;
 }
 
 // Make an output vector of Items from the bag (for checking)
@@ -126,6 +125,7 @@ template <class ItemType>
 vector<ItemType> ArrayBag<ItemType>::toVector() const
 {
 	vector<ItemType> bagContents;
-	// small STUB
-	return bagContents;				
+	for(int i=0; i < itemCount; ++i)
+		bagContents.push_back(items[i]);
+	return bagContents;
 }
