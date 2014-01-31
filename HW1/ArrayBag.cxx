@@ -29,10 +29,7 @@ int ArrayBag<ItemType>::getCapacity( ) const
 template <class ItemType>
 bool ArrayBag<ItemType>::isEmpty() const
 {
-	if(itemCount == 0)
-		return true;
-	else
-		return false;
+	return(itemCount == 0);
 }
 
 // Report whether the Bag is full
@@ -41,10 +38,7 @@ bool ArrayBag<ItemType>::isEmpty() const
 template <class ItemType>
 bool ArrayBag<ItemType>::isFull() const
 {
-	if(itemCount == DEFAULT_CAPACITY)
-		return true;
-	else
-		return false;
+	return(itemCount == DEFAULT_CAPACITY);
 }
 
 // Give the Bag a new Item to store
@@ -90,8 +84,15 @@ bool ArrayBag<ItemType>::remove(const ItemType& anItem)
 		for(; i < itemCount-1; ++i)
 			items[i] = items[i+1];
 		itemCount--;
-		return true;	//confirm w/ E. White
+		return true;
 	}
+
+/**	for() {
+		if found
+			remove from backend
+			return true
+	}
+	return false*/
 }
 
 // Check if an Item is in the Bag
