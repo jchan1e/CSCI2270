@@ -10,15 +10,13 @@ int ArrayBag<ItemType>::getCapacity( ) const
 template <class ItemType>
 bool ArrayBag<ItemType>::add(const ItemType& newItem)
 {
-	if (itemCount < DEFAULT_CAPACITY)
+	if (!isFull())
 	{		
-		if (isFull())
-			return false;
-		items[++itemCount] = newItem;
+		items[itemCount] = newItem;
+		++itemCount;
 		return true;
 	}
-	else
-		return false;
+	return false;
 }
 
 template <class ItemType>
@@ -54,14 +52,11 @@ void ArrayBag<ItemType>::clear()
 template <class ItemType>
 bool ArrayBag<ItemType>::remove(const ItemType& anItem)
 {
-	int k;
-	if (itemCount == 0)		 
-		return false;
-	for (k = 0; k < itemCount; ++k)	
+	for (int k = 0; k < itemCount; ++k)	
 	{
 		if (items[k] == anItem)
 		{
-			items[k] = items[itemCount];  
+			items[k] = items[itemCount-1];  
 			itemCount--;
 			return true;
 		}
@@ -88,16 +83,14 @@ template <class ItemType>
 int ArrayBag<ItemType>::getFrequencyOf(const ItemType& anItem) const
 {
 	int freq = 0;
-	if (contains(anItem) == false) 	
-		return 0;
 	int k = 0; 
-	while (itemCount < k)		
+	while (k < itemCount)		
 	{
 		if (items[k] == anItem)
 		{
 			freq++;
 		}
-		k++
+		k++;
 	}
 	return freq;
 }
