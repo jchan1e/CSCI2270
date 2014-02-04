@@ -57,8 +57,7 @@ bool ArrayBag<ItemType>::add(const ItemType& newItem)
 		else
 			return false;
 	}
-	else
-		return true;
+	return true;
 }
 
 // Make the Bag act like an empty Bag again
@@ -79,13 +78,11 @@ bool ArrayBag<ItemType>::remove(const ItemType& anItem)
 		++i;
 	if(i >= itemCount)
 		return false;
-	else
-	{
-		for(; i < itemCount-1; ++i)
-			items[i] = items[i+1];
-		itemCount--;
-		return true;
-	}
+	for(; i < itemCount-1; ++i)
+		items[i] = items[i+1];
+	itemCount--;
+	return true;
+	
 
 /**	for() {
 		if found
