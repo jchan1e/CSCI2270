@@ -26,7 +26,7 @@ ArrayBag<ItemType>::ArrayBag(const ArrayBag& anotherBag)
 template <class ItemType>
 ArrayBag<ItemType>::~ArrayBag()
 {
-	delete items;
+	delete[] items;
 }
 
 // Assignment operator
@@ -69,7 +69,7 @@ void ArrayBag<ItemType>::resize(int newCapacity)
 	for(int i = 0; i < itemCount; ++i)
 		tmp[i] = items[i];
 
-//	delete items;
+	delete[] items;
 	items = tmp;
 }
 
