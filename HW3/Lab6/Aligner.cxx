@@ -100,7 +100,6 @@ namespace Lab6
 		matched = true;
 		maximum_match = matches[rows][cols];
 		return matches[rows][cols];
-		
 	}
 	
 	
