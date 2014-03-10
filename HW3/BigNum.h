@@ -110,15 +110,15 @@
 
 #ifndef HW3_BIGNUM_H
 #define HW3_BIGNUM_H
-#include <cstdlib>  // Provides unsigned int
-#include <iostream> // Provides istream and ostream
+#include <cstdlib> 	// Provides unsigned int
+#include <iostream>	// Provides istream and ostream
 #include <cstring>
 
 namespace HW3
 {
-    class BigNum 
-    {
-    public:
+	class BigNum 
+	{
+	public:
 	
 	// CONSTRUCTORS and DESTRUCTORS
 	BigNum();                            
@@ -142,22 +142,38 @@ namespace HW3
 	
 	// small method used in testing
 	char* printBigNum() const {
-	    int i = 0;
-	    int offset = 0;
-	    char* result; 
-	    if (!(positive)){
-		result = new char[used + 2];
-		result[0] = '-';
-		offset = 1;
-	    }else{
-		result = new char[used + 1];
-	    }
-	    for (i = used - 1; i >= 0 ; --i)
-	    {
-		result[used - 1 - i + offset] = digits[i] + 48;
-	    }
-	    result[used + offset] = '\0';
-	    return result;
+//		int i = 0;
+//		int offset = 0;
+		std::string str;
+		char* result;
+		char buf[2];
+/*		if (!(positive))
+		{
+			result = new char[used + 2];
+			result[0] = '-';
+			offset = 1;
+		}
+		else
+			result = new char[used + 1]; */
+		for (int i = used - 1; i >= 0; --i)
+		{
+			//	std::cout << str << std::endl;
+			sprintf(buf, "%02d", digits[i]);
+			str.append(buf);
+//			result[used - 1 - i + offset]
+		}
+//		result[used + offset] = '\0';
+		//std::cout << str << std::endl;
+		if (str[0] == '0')
+			str.erase(0,1);
+		if (!positive)
+			str.insert(0, "-");
+		//std::cout << str << std::endl;
+		result = new char[str.length()+1];
+		str.copy(result, str.length());
+		result[str.length()] = '\0';
+		//std::cout << result << std::endl;
+		return result;
 	}
 
 	// FRIEND FUNCTIONS
@@ -178,7 +194,7 @@ namespace HW3
 
 	
   private:
-	unsigned int *digits;         	// Pointer to the array of BigNum digits 
+	unsigned char *digits;         	// Pointer to the array of BigNum digits 
 	bool positive;          		// Indicates the sign of BigNum (true for positive, false for negative)
 	unsigned int used;            	// Length of the non-garbage array for BigNum digits  
 	unsigned int capacity;        	// Size of the memory allocated for this BigNum 
@@ -192,8 +208,8 @@ namespace HW3
 	BigNum& diff(const BigNum& a, const BigNum& b);
 	BigNum& sum(const BigNum& a, const BigNum& b);
 	BigNum& mult(const BigNum& a, const BigNum& b);
-    
-    };
+	
+	};
 
 }
 

@@ -11,7 +11,7 @@ using namespace std;
 using namespace HW3;
 ofstream grade;
 
-#define TOTALTESTS 20
+#define TOTALTESTS 27
 
 int testNo = 0;
 int i = 0;
@@ -208,9 +208,9 @@ void tester(){
         }
     }
     if (testNo == 18){
-        BigNum test18b = 76878;
-        test18b = test18b;
-        if (strcmp(test18b.printBigNum(), "76878") == 0){
+        BigNum test19b = 76878;
+        test19b = test19b;
+        if (strcmp(test19b.printBigNum(), "76878") == 0){
             cerr << "test 19 passed.\n";
             grade << "test 19 passed.\n";
         }else{
@@ -221,14 +221,86 @@ void tester(){
         
 // bad Eliz; can't test resize() directly but can force it
 //        test18b.resize(200);
-	BigNum test19 = (string) "99999999999999999999999999999999";
-	BigNum test19b = 1;
-	test19b = test19;
-        if (strcmp(test19b.printBigNum(), "99999999999999999999999999999999") == 0){
+	BigNum test20 = (string) "99999999999999999999999999999999";
+	BigNum test20b = 1;
+	test20b = test20;
+        if (strcmp(test20b.printBigNum(), "99999999999999999999999999999999") == 0){
             cerr << "test 20 passed.\n";
             grade << "test 20 passed.\n";
         }else{
             grade << "test 20 failed.\n";
+        }
+    }
+    if (testNo == 20){
+        BigNum test21;
+        cout << "enter a big number\n";
+        cin >> test21;
+        cout << test21 << endl;
+    }
+    if (testNo == 21){
+        BigNum test22a = 123;
+        BigNum test22b = 123;
+        if(test22a == test22b){
+            cerr << "test 22 passed.\n";
+            grade << "test 22 passed.\n";
+        }
+        else{
+            grade << "test 22 failed\n";
+        }
+    }
+    if (testNo == 22){
+        BigNum test23a = 123;
+        BigNum test23b = -123;
+        if(test23a > test23b){
+            cerr << "test 23 passed.\n";
+            grade << "test 23 passed.\n";
+        }
+        else{
+            grade << "test 23 failed\n";
+        }
+    }
+    if (testNo == 23){
+        BigNum test24a = 123;
+        BigNum test24b = 321;
+        if(test24a < test24b){
+            cerr << "test 24 passed.\n";
+            grade << "test 24 passed.\n";
+        }
+        else{
+            grade << "test 24 failed\n";
+        }
+    }
+    if (testNo == 24){
+        BigNum test25a = -123;
+        BigNum test25b = -321;
+        if(test25a >= test25b){
+            cerr << "test 25 passed.\n";
+            grade << "test 25 passed.\n";
+        }
+        else{
+            grade << "test 25 failed\n";
+        }
+    }
+    if (testNo == 25){
+        BigNum test26a = -123;
+        BigNum test26b = -321;
+        if(test26b <= test26a){
+            cerr << "test 26 passed.\n";
+            grade << "test 26 passed.\n";
+        }
+        else{
+            grade << "test 26 failed\n";
+        }
+    }
+    if (testNo == 26){
+        BigNum test27a = 321;
+        BigNum test27b = -321;
+        if(test27b != test27a){
+            cerr << "test 27 passed.\n";
+            grade << "test 27 passed.\n";
+        }
+        else{
+            grade << "test 27 failed\n";
         }
     }
     grade.close();
