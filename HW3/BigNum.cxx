@@ -125,7 +125,7 @@ namespace HW3
 
 	BigNum& BigNum::operator=(const BigNum& anotherBigNum)
 	{
-		resize(anotherBigNum.capacity);
+		capacity = anotherBigNum.capacity;
 		used = anotherBigNum.used;
 		positive = anotherBigNum.positive;
 		for(int i = 0; i < used; ++i)
@@ -166,13 +166,13 @@ namespace HW3
 
 	BigNum& BigNum::operator++()
 	{
-		*this += 1;
+		*this = *this + 1;
 		return *this;
 	}
 
 	BigNum& BigNum::operator--()
 	{
-		*this -= 1;
+		*this = *this - 1;
 		return *this;
 	}
 
@@ -194,13 +194,7 @@ namespace HW3
 
 	BigNum operator+(const BigNum& a, const BigNum& b)
 	{
-		BigNum result = a;
-/*		if (a.capacity < b.capacity)
-			a.resize(b.capacity);
-		for(int i; i < a.used && i < b.used; ++i)
-		{
-
-		}*/
+		BigNum result;
 		return result;
 	}
 
