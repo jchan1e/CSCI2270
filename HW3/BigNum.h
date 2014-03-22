@@ -191,6 +191,7 @@ namespace HW3
 	friend bool operator<=(const BigNum& a, const BigNum& b);
 	friend bool operator==(const BigNum& a, const BigNum& b);
 	friend bool operator!=(const BigNum& a, const BigNum& b);
+	//friend bool abscomp(const BigNum a, const BigNum b);
 
 	
   private:
@@ -208,6 +209,8 @@ namespace HW3
 	BigNum& diff(const BigNum& a, const BigNum& b);
 	BigNum& sum(const BigNum& a, const BigNum& b);
 	BigNum& mult(const BigNum& a, const BigNum& b);
+	bool absGreater(const BigNum& a, const BigNum& b);
+
 	
 	};
 

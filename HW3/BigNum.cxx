@@ -42,12 +42,12 @@ namespace HW3
 			used = 1;
 		}
 		for(int i = 0; num > 0; ++i)		//convert to base 100
-			{
-				digits[i] = num %100;
-				num /= 100;
-				++used;
-			}
-}
+		{
+			digits[i] = num %100;
+			num /= 100;
+			++used;
+		}
+	}
 
 	// Constructor that receives a string; leading 0's will be ignored
 	BigNum::BigNum(const string& strin)
@@ -125,7 +125,7 @@ namespace HW3
 
 	BigNum& BigNum::operator=(const BigNum& anotherBigNum)
 	{
-		capacity = anotherBigNum.capacity;
+		resize(anotherBigNum.capacity);
 		used = anotherBigNum.used;
 		positive = anotherBigNum.positive;
 		for(int i = 0; i < used; ++i)
@@ -178,41 +178,156 @@ namespace HW3
 
 	BigNum& BigNum::diff(const BigNum& a, const BigNum& b)
 	{
+		while (capacity < a.used || capacity < b.used)
+			resize(capacity * 2);
+		for(int i = 0; i < a.used; ++i)
+		{
+			digits[i] = a.digits[i];
+		}
+		used = a.used;
+		for(int i = 0; i < used; ++i)
+		{
+			if (digits[i] < b.digits[i])
+			{
+				digits[i] = digits[i] + 100 - b.digits[i];
+				int k = 1;
+				while(digits[i+k] == 0 && i+k < used)
+				{
+					digits[i+k] = 99;
+					++k;
+				}
+				digits[i+k] -= 1;
+			}
+			else
+				digits[i] = digits[i] - b.digits[i];
+		}
+		while (digits[used-1] == 0 && used > 1)
+			--used;
 		return *this;
 	}
 
 
-	BigNum& BigNum::mult(const BigNum& a, const BigNum& b)
+	/*BigNum& BigNum::mult(const BigNum& a, const BigNum& b)
 	{
 		return *this;
-	}
+	}*/
 	
 	BigNum& BigNum::sum(const BigNum& a, const BigNum& b) 
 	{
+		if (capacity < a.used)
+			resize(a.used+1);
+		if (capacity < b.used)
+			resize(b.used+1);
+		used = 0;
+		char carry = 0;
+		for(int i = 0; i < a.used || i < b.used; ++i)
+		{
+			if (used <= b.used)
+			{
+				digits[i] = a.digits[i] + b.digits[i] + carry;
+				if (digits[i] >= 100)
+				{
+					digits[i] -= 100;
+					carry = 1;
+				//cout << " " << (int)digits[i+1] << endl;
+				}
+				else
+					carry = 0;
+			}
+			else
+			{
+				digits[i] = a.digits[i] + carry;
+				carry = 0;
+			}
+			++used;
+			//cout << (int)digits[i] << " ";
+		} //cout << endl;
+		if (carry == 1)
+		{
+			++used;
+			digits[used-1] = carry;
+		}
 		return *this;
 	}
 
 	BigNum operator+(const BigNum& a, const BigNum& b)
 	{
 		BigNum result;
+		if (a.positive == b.positive)
+		{
+			if (a.positive == a > b)
+				result = result.sum(a,b);
+			else
+				result = result.sum(b,a);
+			result.positive = a.positive;
+		}
+		else
+		{
+			result.positive = a.positive == result.absGreater(a,b);
+			if (result.positive == a > b)
+				result = result.diff(a,b);
+			else
+				result = result.diff(b,a);
+		}
+		//cout << result << endl;
 		return result;
 	}
 
 	BigNum operator-(const BigNum& a, const BigNum& b)
 	{
 		BigNum result;
+		if (a.positive == b.positive)
+		{
+			result.positive = (a > b);
+			if (result.positive == a.positive)
+				result = result.diff(a,b);
+			else
+				result = result.diff(b,a);
+		}
+		else
+		{
+			if (a.positive == a > b)
+				result = result.sum(a,b);
+			else
+				result = result.sum(b,a);
+			result.positive = a.positive;
+		}
+		//cout << result << endl;
 		return result;
 	}
 
 	BigNum operator*(const BigNum& a, const BigNum& b)
 	{
-		BigNum result;
+		BigNum result = 0;
+		if (a == 0 || b == 0)
+			return result;
+		unsigned char carry = 0;
+		while (result.capacity < a.used + b.used)
+			result.resize(result.capacity*2);
+		result.used = a.used+b.used-1;
+		for(int i = 0; i < result.used; ++i)
+			result.digits[i] = 0;
+		for(int i = 0; i < a.used; ++i)
+		{
+			for(int j = 0; j < b.used; ++j)
+			{
+				result.digits[i+j] += (a.digits[i]*b.digits[j] +carry) %100;
+				carry = (a.digits[i]*b.digits[j] +carry / 100);
+			}
+		}
+		if (carry > 0)
+			++result.used;
+		result.positive = a.positive == b.positive;
 		return result;
 	}
 
 	BigNum operator / (const BigNum& a, const BigNum& b)
 	{
 		BigNum result;
+		BigNum tmp;
+		while (result.capacity < a.used)
+			result.resize(result.capacity*2);
+
 		return result;
 	}
 
@@ -265,47 +380,19 @@ namespace HW3
 
 	bool operator>=(const BigNum& a, const BigNum& b)
 	{
-		return a > b || a == b;
+		return a == b || a > b;
 	}
 
 
 	bool operator<(const BigNum& a, const BigNum& b)
 	{
-		if (!a.positive && b.positive)
-			return true;
-		else if (a.positive && !b.positive)
-			return false;
-		else if (a.positive && b.positive)
-		{
-			if (a.used < b.used)
-				return true;
-			else if (a.used > b.used)
-				return false;
-			for(int i = a.used-1; i >= 0; --i)
-			{
-				if (a.digits[i] < b.digits[i])
-					return true;
-			}
-		}
-		else
-		{
-			if (a.used > b.used)
-				return true;
-			else if (a.used < b.used)
-				return false;
-			for(int i = a.used-1; i >= 0; --i)
-			{
-				if (a.digits[i] > b.digits[i])
-					return true;
-			}
-		}
-		return false;
+		return b > a;
 	}
 
 
 	bool operator<=(const BigNum& a, const BigNum& b)
 	{
-		return a < b || a == b;
+		return a == b || a < b;
 	}
 
 
@@ -359,9 +446,22 @@ namespace HW3
 	BigNum factorial(const BigNum& a)
 	{
 		BigNum result = 1;
-		for(BigNum i = a; i > 1; --i)
+		for(BigNum i = 0; i < a+1; ++i)
 			result *= i;
 		return result;
+	}
+	bool BigNum::absGreater(const BigNum& a, const BigNum& b)
+	{
+		if (a.used > b.used)
+			return true;
+		else if (a.used < b.used)
+			return false;
+		for(int i = a.used-1; i <= 0; ++i)
+		{
+			if (a.digits[i] > b.digits[i])
+				return true;
+		}
+		return false;
 	}
 }
 
