@@ -227,7 +227,6 @@ namespace HW3
 				{
 					digits[i] -= 100;
 					carry = 1;
-				//cout << " " << (int)digits[i+1] << endl;
 				}
 				else
 					carry = 0;
@@ -238,8 +237,7 @@ namespace HW3
 				carry = 0;
 			}
 			++used;
-			//cout << (int)digits[i] << " ";
-		} //cout << endl;
+		}
 		if (carry == 1)
 		{
 			++used;
@@ -299,33 +297,50 @@ namespace HW3
 		BigNum result;
 		if (a == 0 || b == 0)
 			return result;
-		unsigned char carry = 0;
-		while (result.capacity < a.used + b.used)
+		unsigned int carry = 0;
+
+		while (result.capacity <= a.used + b.used)
 			result.resize(result.capacity*2);
-		result.used = a.used+b.used-1;
+		result.used = a.used+b.used;
+
 		for(int i = 0; i < result.used; ++i)
 			result.digits[i] = 0;
+
+		int highlander;
+
 		for(int i = 0; i < a.used; ++i)
 		{
+			//cout << "digits\tcarry\n";
 			for(int j = 0; j < b.used; ++j)
 			{
-				result.digits[i+j] += (a.digits[i]*b.digits[j] +carry) %100;
-				carry = (a.digits[i]*b.digits[j] +carry / 100);
+				highlander = (result.digits[i+j] + (int)(a.digits[i]*b.digits[j] +carry ));
+				result.digits[i+j] = highlander %100;
+				carry = highlander / 100;
+				//cout << (int) a.digits[i] << " * " << (int) b.digits[j] << " = ";
+				//cout << (int)result.digits[i+j] << "\t" << carry << endl;
 			}
+			if (carry > 0)
+			{
+				result.digits[i + b.used] = carry;
+			}
+			carry = 0;
 		}
-		if (carry > 0)
-			++result.used;
+		if (result.digits[result.used-1] == 0)
+			--result.used;
 		result.positive = a.positive == b.positive;
 		return result;
 	}
 
 	BigNum operator / (const BigNum& a, const BigNum& b)
 	{
-		BigNum result;
-		BigNum tmp;
-		while (result.capacity < a.used)
-			result.resize(result.capacity*2);
-
+		BigNum result = 0;
+		BigNum thing = b;
+		while (thing < a)
+		{
+			thing += b;
+			++result;
+		}
+		result.positive = a.positive == b.positive;
 		return result;
 	}
 
@@ -334,7 +349,7 @@ namespace HW3
 	{
 		BigNum A = a;
 		BigNum result;
-		while (a >= b)
+		while (A >= b)
 		{
 			result = A - b; 
 			A -= b;
@@ -358,6 +373,8 @@ namespace HW3
 			{
 				if (a.digits[i] > b.digits[i])
 					return true;
+				else if (a.digits[i] < b.digits[i])
+					return false;
 			}
 		}
 		else
@@ -370,6 +387,8 @@ namespace HW3
 			{
 				if (a.digits[i] < b.digits[i])
 					return true;
+				else if (a.digits[i] > b.digits[i])
+					return false;
 			}
 		}
 		return false;
@@ -444,7 +463,7 @@ namespace HW3
 	BigNum factorial(const BigNum& a)
 	{
 		BigNum result = 1;
-		for(BigNum i = 0; i < a+1; ++i)
+		for(BigNum i = 1; i < a+1; ++i)
 			result *= i;
 		return result;
 	}

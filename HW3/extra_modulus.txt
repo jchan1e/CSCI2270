@@ -29,7 +29,7 @@ test 26 passed.
 test 27 passed.
 test 28 passed.
 test 29 passed.
-test 30 FAILED.
+test 30 passed.
 test 31 passed.
 RELATIONAL <, <=
 test 32 passed.
@@ -61,21 +61,24 @@ test 55 passed.
 test 56 passed.
 test 57 passed.
 MULTIPLICATION
-test 58 FAILED.
-test 59 FAILED.
-test 60 FAILED.
-test 61 FAILED.
-test 62 FAILED.
+test 58 passed.
+test 59 passed.
+test 60 passed.
+test 61 passed.
+test 62 passed.
 test 63 passed.
 test 64 passed.
 test 65 passed.
-test 66 FAILED.
-test 67 FAILED.
-test 68 FAILED.
+test 66 passed.
+test 67 passed.
+test 68 passed.
 test 69 passed.
-test 70 FAILED.
-test 71 FAILED.
+test 70 passed.
+test 71 passed.
 DIVISION TEST
-test 72 FAILED.
+test 72 passed.
 test 73 passed.
 MODULUS TEST
+test 74 passed.
+test 75 passed.
+total: 71
