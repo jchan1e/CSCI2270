@@ -187,7 +187,7 @@ namespace HW3
 		used = a.used;
 		for(int i = 0; i < used; ++i)
 		{
-			if (digits[i] < b.digits[i])
+			if (digits[i] < b.digits[i] && i < b.used)
 			{
 				digits[i] = digits[i] + 100 - b.digits[i];
 				int k = 1;
@@ -198,7 +198,7 @@ namespace HW3
 				}
 				digits[i+k] -= 1;
 			}
-			else
+			else if (i < b.used)
 				digits[i] = digits[i] - b.digits[i];
 		}
 		while (digits[used-1] == 0 && used > 1)
@@ -214,13 +214,11 @@ namespace HW3
 	
 	BigNum& BigNum::sum(const BigNum& a, const BigNum& b) 
 	{
-		if (capacity < a.used)
-			resize(a.used+1);
-		if (capacity < b.used)
-			resize(b.used+1);
+		while (capacity < a.used)
+			resize(capacity*2);
 		used = 0;
 		char carry = 0;
-		for(int i = 0; i < a.used || i < b.used; ++i)
+		for(int i = 0; i < a.used; ++i)
 		{
 			if (used <= b.used)
 			{
@@ -259,12 +257,12 @@ namespace HW3
 				result = result.sum(a,b);
 			else
 				result = result.sum(b,a);
-			result.positive = a.positive;
+			result.positive = a.positive || result == 0;
 		}
 		else
 		{
-			result.positive = a.positive == result.absGreater(a,b);
-			if (result.positive == a > b)
+			result.positive = b.positive == result.absGreater(b,a);
+			if (result.positive == a >= b)
 				result = result.diff(a,b);
 			else
 				result = result.diff(b,a);
@@ -278,7 +276,7 @@ namespace HW3
 		BigNum result;
 		if (a.positive == b.positive)
 		{
-			result.positive = (a > b);
+			result.positive = a >= b;
 			if (result.positive == a.positive)
 				result = result.diff(a,b);
 			else
@@ -286,11 +284,11 @@ namespace HW3
 		}
 		else
 		{
-			if (a.positive == a > b)
+			if (!result.absGreater(b,a))
 				result = result.sum(a,b);
 			else
 				result = result.sum(b,a);
-			result.positive = a.positive;
+			result.positive = a.positive || result == 0;
 		}
 		//cout << result << endl;
 		return result;
@@ -298,7 +296,7 @@ namespace HW3
 
 	BigNum operator*(const BigNum& a, const BigNum& b)
 	{
-		BigNum result = 0;
+		BigNum result;
 		if (a == 0 || b == 0)
 			return result;
 		unsigned char carry = 0;
@@ -456,10 +454,12 @@ namespace HW3
 			return true;
 		else if (a.used < b.used)
 			return false;
-		for(int i = a.used-1; i <= 0; ++i)
+		for(int i = a.used-1; i >= 0; --i)
 		{
 			if (a.digits[i] > b.digits[i])
 				return true;
+			if (a.digits[i] < b.digits[i])
+				return false;
 		}
 		return false;
 	}
