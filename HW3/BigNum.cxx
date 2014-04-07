@@ -125,12 +125,17 @@ namespace HW3
 
 	BigNum& BigNum::operator=(const BigNum& anotherBigNum)
 	{
-		resize(anotherBigNum.capacity);
-		used = anotherBigNum.used;
-		positive = anotherBigNum.positive;
-		for(int i = 0; i < used; ++i)
-			digits[i] = anotherBigNum.digits[i];
-		return *this;
+		if (*this == anotherBigNum)
+			return *this;
+		else
+		{
+			resize(anotherBigNum.capacity);
+			used = anotherBigNum.used;
+			positive = anotherBigNum.positive;
+			for(int i = 0; i < used; ++i)
+				digits[i] = anotherBigNum.digits[i];
+			return *this;
+		}
 	}
 
 
